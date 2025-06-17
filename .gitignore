@@ -1,0 +1,5 @@
+# Exclude extracted conversation files
+conversations/
+
+# Exclude Claude export data (contains personal conversations)
+Claude Data*/
