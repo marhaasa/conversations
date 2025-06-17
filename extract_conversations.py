@@ -160,6 +160,9 @@ def process_conversation(conv, output_dir):
         content.append(message_content)
         content.append("")
     
+    # Add tag at the end
+    content.append("[[claude]]")
+    
     # Write file
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write('\n'.join(content))
