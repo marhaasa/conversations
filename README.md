@@ -63,28 +63,28 @@ After processing your Claude export, you'll get organized markdown files:
 
 ```
 conversations/
-├── 2024-11-05_Comparing_Data_Across_Tables.md
-├── 2025-01-15_Python_Code_Review_and_Optimization.md
-├── 2025-03-22_Setting_Up_Docker_Development_Environment.md
-├── 2025-05-23_Feedback_on_Microsoft_Fabric_CLI_TUI_Application.md
-└── 2025-06-17_Italian_Dinner_Party_Drinks.md
+├── 2024-12-03_Building_REST_API_with_FastAPI.md
+├── 2025-02-14_Explaining_Machine_Learning_Concepts.md
+├── 2025-04-08_JavaScript_Debugging_Techniques.md
+├── 2025-05-20_Career_Advice_for_Software_Engineers.md
+└── 2025-06-15_Database_Schema_Design_Tips.md
 ```
 
 Each markdown file contains:
 ```markdown
-# Python Code Review and Optimization
+# Building REST API with FastAPI
 
-**Created:** 2025-01-15 14:30:22  
-**Updated:** 2025-01-15 15:45:10  
-**Messages:** 12
+**Created:** 2024-12-03 09:15:33  
+**Updated:** 2024-12-03 10:42:18  
+**Messages:** 8
 
 ## Human
 
-Can you help me optimize this Python function for better performance?
+What's the best way to structure a FastAPI project for a medium-sized application?
 
 ## Assistant
 
-I'd be happy to help optimize your Python function! To provide the best...
+For a medium-sized FastAPI application, I recommend following a structured approach...
 ```
 
 ## Requirements
