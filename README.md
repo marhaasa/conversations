@@ -41,13 +41,45 @@ python3 extract_conversations.py --data-dir "Claude Export" --output-dir "proces
 python3 extract_conversations.py --help
 ```
 
+### Tagging Conversations
+
+After extracting conversations, you can add semantic tags using the batch tagging tool:
+
+**Tag all conversations:**
+```bash
+python3 tag_conversations.py
+```
+
+**Tag conversations in custom directory:**
+```bash
+python3 tag_conversations.py --conversations-dir "my_notes"
+```
+
+**Force retag already tagged conversations:**
+```bash
+python3 tag_conversations.py --force
+```
+
+**Test with limited files:**
+```bash
+python3 tag_conversations.py --limit 5
+```
+
 ## Features
 
+### Extraction
 - **Automatic filtering** - Removes empty conversations and incomplete exchanges
 - **Organized output** - Files named with date prefix for chronological sorting
 - **Rich metadata** - Each file includes creation date, message count, and conversation timeline
 - **Content preservation** - Handles attachments and various message formats
 - **Progress reporting** - Shows filtering statistics and processing status
+
+### Tagging
+- **Intelligent tagging** - Uses Claude to analyze conversation content and suggest relevant tags
+- **Tag validation** - Ensures tags follow proper format (lowercase, single words)
+- **Content verification** - Prevents accidental modification of original conversation content
+- **Safe processing** - Automatic rollback if content integrity is compromised
+- **Batch processing** - Handle multiple conversations efficiently with progress tracking
 
 ## Output Format
 
@@ -55,6 +87,7 @@ Generated markdown files include:
 - Conversation title as main header
 - Metadata section with dates and message count
 - Alternating "Human" and "Assistant" sections
+- Semantic tags at the end (e.g., `[[python]]`, `[[debugging]]`, `[[claude]]`)
 - Clean, readable formatting suitable for note-taking apps
 
 ## Example Output
@@ -85,9 +118,15 @@ What's the best way to structure a FastAPI project for a medium-sized applicatio
 ## Assistant
 
 For a medium-sized FastAPI application, I recommend following a structured approach...
+
+[[fastapi]]
+[[python]]
+[[api]]
+[[claude]]
 ```
 
 ## Requirements
 
 - Python 3.6+
-- No external dependencies (uses only standard library)
+- Claude Code CLI (for tagging functionality)
+- No external dependencies for extraction (uses only standard library)
