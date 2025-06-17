@@ -59,6 +59,54 @@ def extract_message_content(message):
     return "[No content]"
 
 
+def should_filter_conversation(conv):
+    """
+    Determines if a conversation should be filtered out based on content quality.
+    
+    Returns: (bool, str) - (should_filter, reason)
+    """
+    name = conv.get('name', '')
+    messages = conv.get('chat_messages', [])
+    message_count = len(messages)
+    
+    # Count total characters and message types
+    total_chars = 0
+    human_messages = 0
+    assistant_messages = 0
+    
+    for msg in messages:
+        sender = msg.get('sender', '')
+        if sender == 'human':
+            human_messages += 1
+        elif sender == 'assistant':
+            assistant_messages += 1
+        
+        # Count characters from text field
+        text_content = msg.get('text', '')
+        if text_content and text_content.strip():
+            total_chars += len(text_content.strip())
+        
+        # Count characters from content array
+        if 'content' in msg and isinstance(msg['content'], list):
+            for content_item in msg['content']:
+                if isinstance(content_item, dict) and 'text' in content_item:
+                    content_text = content_item.get('text', '')
+                    if content_text and content_text.strip():
+                        total_chars += len(content_text.strip())
+    
+    # Filtering rules
+    if total_chars == 0:
+        return True, "Empty conversation (0 characters)"
+    
+    if human_messages > 0 and assistant_messages == 0:
+        return True, "No assistant response"
+    
+    if message_count == 0:
+        return True, "No messages"
+    
+    return False, ""
+
+
 def process_conversation(conv, output_dir):
     """Convert single conversation to markdown file."""
     # Get conversation metadata
@@ -139,20 +187,36 @@ def main():
         conversations = json.load(f)
     
     print(f"Found {len(conversations)} conversations")
+    
+    # Filter conversations
+    filtered_conversations = []
+    filtered_count = 0
+    for i, conv in enumerate(conversations, 1):
+        should_filter, reason = should_filter_conversation(conv)
+        if should_filter:
+            conv_name = conv.get('name', f'conversation-{i}')
+            print(f"  FILTERED {i:2d}/{len(conversations)}: '{conv_name}' - {reason}")
+            filtered_count += 1
+        else:
+            filtered_conversations.append(conv)
+    
+    print(f"Filtered out {filtered_count} conversations")
+    print(f"Processing {len(filtered_conversations)} meaningful conversations...")
     print(f"Extracting to {output_dir}/")
     
-    # Process each conversation
+    # Process each valid conversation
     success_count = 0
-    for i, conv in enumerate(conversations, 1):
+    for i, conv in enumerate(filtered_conversations, 1):
         try:
             filepath = process_conversation(conv, output_dir)
-            print(f"  {i:2d}/{len(conversations)}: {filepath.name}")
+            print(f"  {i:2d}/{len(filtered_conversations)}: {filepath.name}")
             success_count += 1
         except Exception as e:
             conv_name = conv.get('name', f'conversation-{i}')
             print(f"  ERROR processing '{conv_name}': {e}")
     
-    print(f"\nCompleted: {success_count}/{len(conversations)} conversations extracted")
+    print(f"\nCompleted: {success_count}/{len(filtered_conversations)} conversations extracted")
+    print(f"Total filtered: {filtered_count}/{len(conversations)} ({filtered_count/len(conversations)*100:.1f}%)")
 
 
 if __name__ == "__main__":
