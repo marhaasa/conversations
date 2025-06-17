@@ -13,6 +13,16 @@ This repository contains a conversation extraction system for processing Claude 
 python3 extract_conversations.py
 ```
 
+**Extract with custom data directory:**
+```bash
+python3 extract_conversations.py --data-dir "Claude Data Dec 15 2025"
+```
+
+**Extract with custom output directory:**
+```bash
+python3 extract_conversations.py --output-dir "my_conversations"
+```
+
 **Re-process with new data:**
 1. Replace files in `Claude Data Jun 17 2025/` directory with new export
 2. Run extraction script

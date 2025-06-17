@@ -6,6 +6,7 @@ Extract Claude conversations from JSON export to individual markdown files.
 import json
 import os
 import re
+import argparse
 from datetime import datetime
 from pathlib import Path
 
@@ -168,8 +169,18 @@ def process_conversation(conv, output_dir):
 
 def main():
     """Main extraction process."""
+    parser = argparse.ArgumentParser(description="Extract Claude conversations from JSON export to markdown files")
+    parser.add_argument("--data-dir", "-d", 
+                       default="Claude Data Jun 17 2025",
+                       help="Directory containing Claude export data (default: 'Claude Data Jun 17 2025')")
+    parser.add_argument("--output-dir", "-o",
+                       default="conversations", 
+                       help="Output directory for markdown files (default: 'conversations')")
+    
+    args = parser.parse_args()
+    
     # Input file
-    data_dir = Path("Claude Data Jun 17 2025")
+    data_dir = Path(args.data_dir)
     conversations_file = data_dir / "conversations.json"
     
     if not conversations_file.exists():
@@ -177,7 +188,7 @@ def main():
         return
     
     # Output directory
-    output_dir = Path("conversations")
+    output_dir = Path(args.output_dir)
     output_dir.mkdir(exist_ok=True)
     
     print(f"Loading conversations from {conversations_file}...")
