@@ -28,21 +28,6 @@ python3 extract_conversations.py --output-dir "my_conversations"
 2. Run extraction script
 3. Review filtered conversations output
 
-**Tag conversations with semantic labels:**
-```bash
-python3 tag_conversations.py
-```
-
-**Tag with custom directory:**
-```bash
-python3 tag_conversations.py --conversations-dir "my_conversations"
-```
-
-**Force retag existing conversations:**
-```bash
-python3 tag_conversations.py --force
-```
-
 ## Architecture Overview
 
 ### Data Processing Pipeline
@@ -52,7 +37,6 @@ The system follows a multi-stage pipeline:
 1. **Input Processing**: Reads Claude JSON export from `Claude Data Jun 17 2025/conversations.json`
 2. **Content Filtering**: Automatically filters out empty/meaningless conversations using `should_filter_conversation()`
 3. **Markdown Generation**: Converts each valid conversation to individual markdown files with metadata
-4. **Semantic Tagging**: Uses Claude Code SDK to analyze conversation content and add relevant tags
 
 ### Key Components
 
@@ -73,12 +57,6 @@ The system follows a multi-stage pipeline:
 - Limits filename length to 50 characters
 - Falls back to "untitled" for empty names
 
-**Tagging System (`tag_conversations.py`):**
-- Uses Claude Code SDK to analyze conversation content and suggest relevant tags
-- Validates tag format (lowercase, single words, no spaces)
-- Implements content verification to prevent accidental modification
-- Provides automatic rollback if content integrity is compromised
-- Supports batch processing with progress tracking and error handling
 
 ### Output Structure
 
@@ -87,7 +65,6 @@ Generated markdown files include:
 - Metadata (creation date, update date, message count)
 - Alternating "## Human" and "## Assistant" sections
 - Chronological message ordering
-- Semantic tags at the end (e.g., `[[python]]`, `[[debugging]]`, `[[claude]]`)
 
 ### Git Workflow
 
